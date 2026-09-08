@@ -2,8 +2,8 @@
   "name": "KidQuest — Гейміфікований трекер",
   "short_name": "KidQuest",
   "description": "Перетворіть щоденні обов'язки дитини на захопливий квест!",
-  "start_url": "./index.html",
-  "scope": "/",
+  "start_url": "index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#020617",
@@ -13,13 +13,19 @@
       "src": "images/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "images/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "images/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

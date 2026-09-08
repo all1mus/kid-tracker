@@ -1,14 +1,14 @@
-const CACHE_NAME = 'kidquest-v3'; // Оновили версію кешу
+const CACHE_NAME = 'kidquest-v4'; // Підняли версію
+
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './images/icons/icon-192.png',
-  './images/icons/icon-512.png',
-  './css/style.css',
-  './js/app.js',
-  './js/config.js',
-  './js/locales.js'
+  'index.html',
+  'manifest.json',
+  'css/style.css',
+  'js/app.js',
+  'js/config.js',
+  'js/locales.js',
+  'images/icons/icon-192.png',
+  'images/icons/icon-512.png'
 ];
 
 // Встановлення та завантаження нових файлів у кеш
@@ -22,7 +22,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting(); // Відразу активувати новий Service Worker
 });
 
-// Активація та видалення ВСІХ старих кешів (v1, v2 тощо)
+// Активація та видалення ВСІХ старих кешів (v1, v2, v3)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -41,7 +41,7 @@ self.addEventListener('activate', (event) => {
 
 // Перехоплення запитів: Стратегія "Network First" для HTML та "Stale-While-Revalidate" для ресурсів
 self.addEventListener('fetch', (event) => {
-  // Для HTML файлів завжди спочатку робимо запит в мережу, щоб бачити свіжі зміни
+  // Для HTML файлів / навігації
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -51,7 +51,7 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           });
         })
-        .catch(() => caches.match(event.request)) // Якщо немає інтернету — беремо з кешу
+        .catch(() => caches.match('index.html')) // Якщо немає інтернету — віддаємо index.html
     );
     return;
   }
@@ -59,16 +59,17 @@ self.addEventListener('fetch', (event) => {
   // Для решти ресурсів (картинки, скрипти, стилі)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-          });
-        }
-        return networkResponse;
-      }).catch(() => {/* Offline fallback */ });
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, networkResponse.clone());
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {/* Offline fallback */ });
 
-      // Повертаємо закешовану версію, але у фоні оновлюємо її з мережі
       return cachedResponse || fetchPromise;
     })
   );
