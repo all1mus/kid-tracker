@@ -1,0 +1,14 @@
+# Системні файли (Windows / macOS)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Налаштування редактора VS Code (але залишаємо твої кастомні settings.json)
+.vscode/*
+!.vscode/settings.json
+
+# Залежності та збірки (якщо в майбутньому підключиш Node.js/npm)
+node_modules/
+dist/
+build/
+.env
