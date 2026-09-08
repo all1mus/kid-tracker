@@ -34,8 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
  * -------------------------------------------------------------------
  */
 function initLanguage() {
+  // Якщо locales.js ще не підвантажився, чекаємо 50мс і пробуємо знову
   if (typeof locales === 'undefined') {
-    console.warn('⚠️ Зачекайте, файл js/locales.js не знайдено або не завантажено!');
+    setTimeout(initLanguage, 50);
     return;
   }
   setLanguage(state.currentLang);
@@ -46,7 +47,7 @@ function setLanguage(lang) {
     console.error(`Мова "${lang}" не знайдена в locales.js`);
     return;
   }
-  
+
   state.currentLang = lang;
   localStorage.setItem('kidquest_lang', lang);
 
@@ -71,18 +72,21 @@ function setLanguage(lang) {
   const btnEn = document.getElementById('lang-en');
 
   if (btnUa && btnEn) {
-    if (lang === 'ua') {
-      btnUa.classList.add('ring-2', 'ring-amber-400', 'scale-110');
-      btnUa.classList.remove('opacity-50');
-      
-      btnEn.classList.remove('ring-2', 'ring-amber-400', 'scale-110');
-      btnEn.classList.add('opacity-50');
-    } else {
-      btnEn.classList.add('ring-2', 'ring-amber-400', 'scale-110');
-      btnEn.classList.remove('opacity-50');
+    const activeClasses = ['ring-2', 'ring-amber-400', 'scale-110'];
+    const inactiveClasses = ['opacity-50'];
 
-      btnUa.classList.remove('ring-2', 'ring-amber-400', 'scale-110');
-      btnUa.classList.add('opacity-50');
+    if (lang === 'ua') {
+      btnUa.classList.add(...activeClasses);
+      btnUa.classList.remove(...inactiveClasses);
+
+      btnEn.classList.remove(...activeClasses);
+      btnEn.classList.add(...inactiveClasses);
+    } else {
+      btnEn.classList.add(...activeClasses);
+      btnEn.classList.remove(...inactiveClasses);
+
+      btnUa.classList.remove(...activeClasses);
+      btnUa.classList.add(...inactiveClasses);
     }
   }
 }
@@ -170,17 +174,15 @@ function installPwa() {
       state.deferredPrompt = null;
     });
   } else {
-    const msg = state.currentLang === 'ua' 
-      ? 'Щоб встановити: натисніть "Поділитися" (Share) в меню браузера, а потім "На початковий екран"' 
+    const msg = state.currentLang === 'ua'
+      ? 'Щоб встановити: натисніть "Поділитися" (Share) в меню браузера, а потім "На початковий екран"'
       : 'To install: tap "Share" in your browser menu, then "Add to Home Screen"';
     alert(msg);
   }
 }
 
 /**
- * -------------------------------------------------------------------
  * 5. КНОПКИ АВТОРИЗАЦІЇ ТА ВИХІД
- * -------------------------------------------------------------------
  */
 function login(provider) {
   console.log(`Натиснуто вхід через ${provider}`);
@@ -188,13 +190,25 @@ function login(provider) {
 }
 
 function logout() {
-  const confirmMsg = state.currentLang === 'ua' 
-    ? 'Ви дійсно бажаєте вийти?' 
-    : 'Are you sure you want to exit?';
+  const confirmMsg = state.currentLang === 'ua'
+    ? 'Ви дійсно бажаєте закрити додаток?'
+    : 'Are you sure you want to close the app?';
 
-  if (confirm(confirmMsg)) {
-    window.location.reload();
-  }
+  if (!confirm(confirmMsg)) return;
+
+  // 1. Спроба закрити вікно PWA / вкладку
+  window.close();
+
+  // 2. Якщо браузер блокує window.close(), згортаємо через історію або порожню сторінку
+  setTimeout(() => {
+    if (!window.closed) {
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = 'about:blank';
+      }
+    }
+  }, 100);
 }
 
 /**
