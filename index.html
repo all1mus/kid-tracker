@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>KidQuest — Гейміфікований трекер для дітей</title>
+  <meta name="description" content="Гейміфікований трекер корисних звичок та хатніх справ для дітей. Перетворіть рутину на захопливий квест!">
+
+  <!-- Open Graph / Соцмережі -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="KidQuest — Гейміфікований трекер для дітей">
+  <meta property="og:description" content="Прибирання, уроки та спорт стають цікавими місіями з балами, прокачуванням рівня та цінними нагородами.">
+  <meta property="og:image" content="https://em-content.zobj.net/source/apple/354/rocket_1f680.png">
+
+  <!-- Підключення PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Налаштування для iOS (iPhone / iPad) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KidQuest">
+  <link rel="apple-touch-icon" href="https://em-content.zobj.net/source/apple/354/rocket_1f680.png">
+
+  <!-- Колір шапки браузера на Android -->
+  <meta name="theme-color" content="#020617">
+
+  <!-- Tailwind CSS & Custom Styles -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="antialiased relative bg-slate-950 text-slate-100 min-h-screen selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- Фоновий градієнт -->
+  <div class="ambient-bg"></div>
+
+  <!-- ЛЕНДИНГ / ЕКРАН ВХОДУ -->
+  <div id="landingScreen" class="min-h-screen max-w-4xl mx-auto px-6 py-4 flex flex-col justify-between gap-3 sm:gap-4 animate-fade-up">
+    
+    <!-- ================= БЛОК 1: Шапка ================= -->
+    <header class="flex justify-between items-center gap-4 h-10 shrink-0">
+      <div class="flex items-center gap-3 group cursor-pointer">
+        <span class="text-3xl transform transition-transform group-hover:rotate-12 duration-300">🚀</span>
+        <span class="font-black text-2xl tracking-wider text-amber-400">KidQuest</span>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Кнопка скидання кешу та даних (Reset/Dev) -->
+        <button onclick="clearAppCache()" title="Очистити кеш та дані" aria-label="Очистити кеш та дані" class="flex items-center justify-center w-9 h-9 rounded-2xl bg-slate-900/80 text-amber-400 border border-amber-500/30 hover:border-amber-400 hover:bg-slate-800 transition-all cursor-pointer backdrop-blur-md shrink-0 active:scale-95">
+          <span class="text-sm">🧹</span>
+        </button>
+
+        <!-- Бейдж 7 днів безоплатно -->
+        <span data-i18n="freeTrial" class="badge-free-trial hidden sm:inline-flex items-center gap-2 text-xs font-black px-4 py-2 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/40 backdrop-blur-md cursor-default">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+          </span>
+          🎁 7 днів безоплатно
+        </span>
+
+        <!-- Кнопка FAQ -->
+        <button onclick="openFaqModal()" title="Часті запитання" class="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-2xl bg-slate-900/80 text-sky-400 border border-slate-700/60 hover:border-sky-500/50 hover:bg-slate-800 transition-all cursor-pointer backdrop-blur-md">
+          <span class="text-sm">❓</span>
+          <span class="hidden sm:inline">FAQ</span>
+        </button>
+
+        <!-- Перемикач мов -->
+        <div class="w-[84px] h-9 flex items-center justify-center gap-3.5 bg-slate-900/80 px-3 rounded-2xl border border-slate-700/60 backdrop-blur-md shrink-0 select-none overflow-hidden">
+          <button onclick="setLanguage('ua')" id="lang-ua" class="w-6 h-6 rounded-full overflow-hidden transition-all duration-200 cursor-pointer flex items-center justify-center p-0 hover:scale-110 focus:outline-none shrink-0" title="Українська" aria-label="Українська мова">
+            <svg class="w-6 h-6 rounded-full pointer-events-none shrink-0" viewBox="0 0 32 32"><rect width="32" height="16" fill="#0057B7"/><rect y="16" width="32" height="16" fill="#FFD700"/></svg>
+          </button>
+          <button onclick="setLanguage('en')" id="lang-en" class="w-6 h-6 rounded-full overflow-hidden transition-all duration-200 cursor-pointer flex items-center justify-center p-0 hover:scale-110 focus:outline-none shrink-0" title="English" aria-label="English language">
+            <svg class="w-6 h-6 rounded-full pointer-events-none shrink-0" viewBox="0 0 32 32">
+              <clipPath id="lang-en-circle-clip"><circle cx="16" cy="16" r="16"/></clipPath>
+              <g clip-path="url(#lang-en-circle-clip)">
+                <rect width="32" height="32" fill="#012169"/>
+                <path d="M0,0 L32,32 M32,0 L0,32" stroke="#fff" stroke-width="6"/>
+                <path d="M0,0 L32,32 M32,0 L0,32" stroke="#C8102E" stroke-width="3"/>
+                <path d="M16,0 V32 M0,16 H32" stroke="#fff" stroke-width="10"/>
+                <path d="M16,0 V32 M0,16 H32" stroke="#C8102E" stroke-width="6"/>
+              </g>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Кнопка Виходу (Power On/Off) -->
+        <button id="logoutBtn" onclick="logout()" title="Вийти" aria-label="Вийти з акаунту" class="hidden w-9 h-9 items-center justify-center rounded-2xl bg-rose-950/40 text-rose-400 border border-rose-500/30 hover:border-rose-500 hover:bg-rose-900/60 hover:text-rose-200 active:scale-95 shadow-[0_0_12px_rgba(244,63,94,0.15)] transition-all cursor-pointer backdrop-blur-md shrink-0">
+          <svg class="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= БЛОК 2: Головний заголовок + Опис ================= -->
+    <main class="flex flex-col gap-4 sm:gap-6 my-auto">
+      <div class="text-center space-y-2.5 max-w-3xl mx-auto mt-2 mb-1">
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white min-h-[80px] sm:min-h-[120px] flex flex-col justify-center">
+          <span data-i18n="heroTitle" class="inline-block">Перетворіть рутину на</span>
+          <span data-i18n="heroHighlight" class="inline-block text-amber-400 drop-shadow-[0_4px_25px_rgba(251,191,36,0.4)]">
+            захопливий квест!
+          </span>
+        </h1>
+
+        <p data-i18n="heroDesc" class="text-slate-300 text-sm sm:text-base max-w-xl font-medium leading-relaxed mx-auto min-h-[48px] flex items-center justify-center">
+          Прибирання, уроки та спорт стають цікавими місіями з балами, прокачуванням рівня та цінними нагородами.
+        </p>
+      </div>
+
+      <!-- ================= БЛОК 3: Кнопки авторизації ================= -->
+      <div class="w-full max-w-xs mx-auto space-y-2.5 my-1 flex flex-col items-center">
+        <button onclick="login('Telegram')" class="btn-squircle btn-telegram font-bold text-sm cursor-pointer h-12 w-full max-w-[280px]">
+          <svg class="w-5 h-5 fill-[#2AABEE] mr-2.5 z-10 shrink-0" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 8.16l-1.97 9.28c-.15.67-.55.83-1.12.51l-3.01-2.22-1.45 1.4c-.16.16-.3.3-.61.3l.21-3.05 5.56-5.02c.24-.22-.05-.34-.37-.13l-6.87 4.33-2.96-.92c-.64-.2-.65-.64.13-.95l11.57-4.46c.53-.2 1 .12.89.93z"/></svg>
+          <span data-i18n="btnTelegram" class="z-10 truncate">Увійти через Telegram</span>
+        </button>
+
+        <!-- Роздільник "або" -->
+        <div class="relative flex items-center justify-center py-0.5 w-full max-w-[280px]">
+          <div class="absolute inset-0 flex items-center"><div class="w-full divider-glow"></div></div>
+          <span data-i18n="orDivider" class="relative px-3.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wider text-slate-300 bg-slate-950/90 rounded-full border border-slate-700/60 backdrop-blur-md">
+            або
+          </span>
+        </div>
+
+        <button onclick="login('Google')" class="btn-squircle btn-google font-bold text-sm cursor-pointer h-12 w-full max-w-[280px]">
+          <svg class="w-5 h-5 mr-2.5 z-10 shrink-0" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+          <span data-i18n="btnGoogle" class="z-10 truncate">Увійти через Google</span>
+        </button>
+      </div>
+
+      <!-- ================= БЛОК 4: Бейдж + Соц. доказ + Гарантії ================= -->
+      <div class="w-full max-w-xl mx-auto space-y-2 text-center mt-2 sm:mt-4">
+        <div class="flex justify-center">
+          <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-xs sm:text-sm font-black text-sky-300">
+            <span data-i18n="badge">✨ Дисципліна без свари та сліз</span>
+          </div>
+        </div>
+
+        <p data-i18n="socialProof" class="text-xs sm:text-sm font-black text-amber-300 tracking-tight sm:tracking-wide text-center">
+          🔥 Понад 1,200+ родин вже створюють корисні звички
+        </p>
+
+        <div class="divider-card my-1"></div>
+
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-bold text-slate-300">
+          <span data-i18n="guaranteeSpam">🔒 Без спаму</span>
+          <span class="text-slate-600 hidden sm:inline">•</span>
+          <span data-i18n="guaranteeTime">⏱️ Вхід за 10 секунд</span>
+          <span class="text-slate-600 hidden sm:inline">•</span>
+          <span data-i18n="guaranteeCard">💳 Картка не потрібна</span>
+        </div>
+      </div>
+
+      <!-- ================= БЛОК 5: Картки ================= -->
+      <div class="flex flex-col gap-4 sm:gap-6 mt-2">
+        <div class="divider-glow"></div>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="glass-panel p-5 rounded-3xl text-left border-l-4 border-l-amber-400 space-y-2">
+            <h2 data-i18n="valueKidsTitle" class="font-black text-amber-400 text-base sm:text-lg flex items-center gap-2">
+              🎮 Чому це захоплює дітей?
+            </h2>
+            <p data-i18n="valueKidsDesc" class="text-sm sm:text-base text-slate-100 leading-relaxed font-medium">
+              Дитина не просто робить хатні справи — вона прокачує персонажа, бачить власний прогрес та вчиться відповідальності, відчуваючи дорослу самостійність.
+            </p>
+          </div>
+
+          <div class="glass-panel p-5 rounded-3xl text-left border-l-4 border-l-sky-400 space-y-2">
+            <h2 data-i18n="valueParentsTitle" class="font-black text-sky-400 text-base sm:text-lg flex items-center gap-2">
+              🌱 Чому це рятує батьків?
+            </h2>
+            <p data-i18n="valueParentsDesc" class="text-sm sm:text-base text-slate-100 leading-relaxed font-medium">
+              Ніяких нагадувань по 10 разів і суперечок. Ви показуєте просту істину: кожна дія має результат, а зусилля винагороджуються.
+            </p>
+          </div>
+        </section>
+
+        <footer class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="glass-panel p-5 rounded-3xl space-y-1.5 text-left">
+            <div class="text-2xl mb-1">🎯</div>
+            <div data-i18n="card1Title" class="font-black text-sm sm:text-base text-sky-300">1. Ставте мету</div>
+            <div data-i18n="card1Desc" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">Подарунок або поїздка, до якої прагне дитина.</div>
+          </div>
+          
+          <div class="glass-panel p-5 rounded-3xl space-y-1.5 text-left">
+            <div class="text-2xl mb-1">⚡</div>
+            <div data-i18n="card2Title" class="font-bold text-sm sm:text-base text-amber-300">2. Задайте місії</div>
+            <div data-i18n="card2Desc" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">Прості щоденні завдання без тривалих суперечок.</div>
+          </div>
+          
+          <div class="glass-panel p-5 rounded-3xl space-y-1.5 text-left">
+            <div class="text-2xl mb-1">🏆</div>
+            <div data-i18n="card3Title" class="font-bold text-sm sm:text-base text-emerald-300">3. Радійте успіху</div>
+            <div data-i18n="card3Desc" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">Дитина отримує бали та бачить свій розвиток.</div>
+          </div>
+        </footer>
+
+        <div class="divider-glow"></div>
+      </div>
+    </main>
+    
+    <!-- ================= БЛОК 6: PWA та Нижній FAQ ================= -->
+    <footer class="flex flex-col items-center justify-center gap-3 my-2 sm:my-3 shrink-0">
+
+      <!-- Компактний блок кнопки PWA -->
+      <div id="pwa-install-container" class="text-center animate-fade-up">
+        <button onclick="installPwa()" class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/90 text-sky-300 font-bold text-xs border border-sky-500/30 shadow-[0_2px_12px_rgba(56,189,248,0.1)] hover:border-sky-400/60 hover:bg-slate-800/90 active:scale-95 transition-all duration-200 cursor-pointer backdrop-blur-md">
+          <span class="text-sm transform group-hover:scale-110 transition-transform duration-200">📱</span>
+          <span class="tracking-wide">Додати KidQuest на головний екран</span>
+          <span class="text-[10px] opacity-60 font-normal">| 1-клік</span>
+        </button>
+        <!-- Компактна підказка -->
+        <p class="mt-1 text-[10px] text-slate-400 font-medium">
+          📱 Працює як додаток: додайте на екран смартфона в меню браузера
+        </p>
+      </div>
+
+      <!-- Кнопка відкриття FAQ -->
+      <button onclick="openFaqModal()" data-i18n="faqBtn" class="text-xs sm:text-sm font-bold text-slate-300 hover:text-amber-400 underline decoration-slate-600 underline-offset-4 transition-colors cursor-pointer">
+        💬 Часті запитання (FAQ)
+      </button>
+
+    </footer>
+  </div>
+
+  <!-- МОДАЛЬНЕ ВІКНО FAQ -->
+  <div id="faqModal" role="dialog" aria-modal="true" aria-labelledby="faqTitle" class="faq-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" onclick="closeFaqModalOnOutside(event)">
+    <div class="faq-modal-content glass-panel border border-slate-700 w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative text-left space-y-5 shadow-2xl max-h-[85vh] flex flex-col">
+      
+      <!-- Заголовок + Кнопка закриття -->
+      <div class="flex items-center justify-between gap-2 shrink-0">
+        <h3 id="faqTitle" data-i18n="faqTitle" class="text-xl sm:text-2xl font-black text-sky-400">💬 Часті запитання</h3>
+        <button onclick="closeFaqModal()" aria-label="Закрити" class="text-slate-400 hover:text-white font-bold text-2xl cursor-pointer transition-transform hover:scale-110">✕</button>
+      </div>
+      
+      <!-- Скроліруємий контент -->
+      <div class="space-y-4 overflow-y-auto pr-1 custom-scrollbar">
+        <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
+          <div data-i18n="faqQ1" class="text-sm sm:text-base font-bold text-amber-300">1. З якого віку підходить KidQuest?</div>
+          <div data-i18n="faqA1" class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">Ідеально для дітей від 5 до 14 років...</div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
+          <div data-i18n="faqQ2" class="text-sm sm:text-base font-bold text-amber-300">2. Що робити, якщо дитина втратить інтерес?</div>
+          <div data-i18n="faqA2" class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">Інтерес підтримується за рахунок...</div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
+          <div data-i18n="faqQ3" class="text-sm sm:text-base font-bold text-amber-300">3. Чи потрібно купувати окремий смартфон дитині?</div>
+          <div data-i18n="faqA3" class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">Ні! Ви можете вести трекер зі свого...</div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
+          <div data-i18n="faqQ4" class="text-sm sm:text-base font-bold text-amber-300">4. Чи можна додати кількох дітей в один акаунт?</div>
+          <div data-i18n="faqA4" class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">Так, ви можете додати всіх...</div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
+          <div data-i18n="faqQ5" class="text-sm sm:text-base font-bold text-amber-300">5. Як працюють нагороди? Чи коштує це реальних грошей?</div>
+          <div data-i18n="faqA5" class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">Ні, монети в додатку ігрові...</div>
+        </div>
+
+        <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
+          <div data-i18n="faqQ6" class="text-sm sm:text-base font-bold text-amber-300">6. Що відбувається після 7 безкоштовних днів?</div>
+          <div data-i18n="faqA6" class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">Ви зможете обрати зручний...</div>
+        </div>
+      </div>
+
+      <button onclick="closeFaqModal()" data-i18n="faqClose" class="w-full py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm sm:text-base transition-all cursor-pointer shrink-0">
+        Закрити
+      </button>
+    </div>
+  </div>
+
+  <div id="mainAppScreen" class="hidden min-h-screen max-w-4xl mx-auto p-6"></div>
+
+  <!-- Скрипти -->
+  <script src="js/locales.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
