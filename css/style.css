@@ -3,11 +3,13 @@
   position: fixed;
   inset: 0;
   z-index: -10;
-  background: 
+  background:
     radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
     radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.1) 0%, transparent 40%),
     radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 60%);
   pointer-events: none;
+  /* Апаратне прискорення для фону */
+  transform: translateZ(0);
 }
 
 /* ================= СВІТЛОВІ РОЗДІЛЬНИКИ ================= */
@@ -25,10 +27,13 @@
 
 /* ================= СМАРАГДОВЕ СЯЙВО ДЛЯ БЕЙДЖА ================= */
 @keyframes pulseGlowBadge {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
     border-color: rgba(16, 185, 129, 0.4);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
     border-color: rgba(16, 185, 129, 0.8);
@@ -37,6 +42,7 @@
 
 .badge-free-trial {
   animation: pulseGlowBadge 2.5s infinite ease-in-out;
+  will-change: box-shadow, border-color;
 }
 
 /* ================= СКЛЯНІ ПАНЕЛІ (GLASSMORPHISM) ================= */
@@ -46,13 +52,14 @@
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
+  transform: translateZ(0);
 }
 
 .glass-panel:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) translateZ(0);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
 }
@@ -71,9 +78,23 @@
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #f1f5f9;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Оптимізований transition замість "all" для прибрання ривків */
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   isolation: isolate;
   box-sizing: border-box;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Захист від скачків іконок всередині кнопок при першому рендері */
+.btn-squircle svg {
+  flex-shrink: 0;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
 }
 
 /* --- Світловий відблиск при наведенні --- */
@@ -84,12 +105,10 @@
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent);
   transform: skewX(-20deg);
   transition: left 0.65s ease;
   z-index: 5;
@@ -100,24 +119,19 @@
   left: 160%;
 }
 
-/* --- Анімація іконки всередині кнопки --- */
-.btn-squircle svg {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
 .btn-squircle:hover svg {
   transform: scale(1.18) rotate(-4deg);
 }
 
 /* --- Фізичний відгук при кліку --- */
 .btn-squircle:active {
-  transform: translateY(1px) scale(0.98) !important;
+  transform: translateY(1px) scale(0.98) translateZ(0) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* ================= КНОПКА TELEGRAM ================= */
 .btn-telegram:hover {
-  transform: translateY(-3px) scale(1.015);
+  transform: translateY(-3px) scale(1.015) translateZ(0);
   background: rgba(30, 41, 59, 0.98);
   border-color: rgba(42, 171, 238, 0.6);
   box-shadow: 0 10px 28px -5px rgba(42, 171, 238, 0.5), 0 0 15px rgba(42, 171, 238, 0.2);
@@ -125,7 +139,7 @@
 
 /* ================= КНОПКА GOOGLE ================= */
 .btn-google:hover {
-  transform: translateY(-3px) scale(1.015);
+  transform: translateY(-3px) scale(1.015) translateZ(0);
   background: rgba(30, 41, 59, 0.98);
   border-color: rgba(66, 133, 244, 0.6);
   box-shadow: 0 10px 28px -5px rgba(66, 133, 244, 0.5), 0 0 15px rgba(66, 133, 244, 0.2);
@@ -133,18 +147,24 @@
 
 /* ================= ПОЧЕРГОВА АНІМАЦІЯ ПУЛЬСАЦІЇ ================= */
 @keyframes pulseGlowTelegram {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(42, 171, 238, 0.45);
   }
 }
 
 @keyframes pulseGlowGoogle {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(66, 133, 244, 0.45);
   }
@@ -153,11 +173,13 @@
 .btn-telegram:not(:hover) {
   animation: pulseGlowTelegram 4s infinite ease-in-out;
   animation-delay: 0s;
+  will-change: box-shadow;
 }
 
 .btn-google:not(:hover) {
   animation: pulseGlowGoogle 4s infinite ease-in-out;
   animation-delay: 2s;
+  will-change: box-shadow;
 }
 
 /* ================= ПЛАВНЕ МОДАЛЬНЕ ВІКНО FAQ ================= */
@@ -171,8 +193,9 @@
 }
 
 .faq-modal-content {
-  transform: scale(0.95) translateY(10px);
+  transform: scale(0.95) translateY(10px) translateZ(0);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .faq-modal-overlay.active {
@@ -181,27 +204,30 @@
 }
 
 .faq-modal-overlay.active .faq-modal-content {
-  transform: scale(1) translateY(0);
+  transform: scale(1) translateY(0) translateZ(0);
 }
 
 /* ================= АНІМАЦІЯ ПОЯВИ СТОРІНКИ ================= */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(15px);
+    transform: translateY(15px) translateZ(0);
   }
+
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
 .animate-fade-up {
   animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
-/* ================= ПРЕФЕРЕНЦИИ ПОЛЬЗОВАТЕЛЯ ================= */
+/* ================= ПРЕФЕРЕНЦІЇ КОРИСТУВАЧА ================= */
 @media (prefers-reduced-motion: reduce) {
+
   .badge-free-trial,
   .btn-telegram:not(:hover),
   .btn-google:not(:hover),
