@@ -14,23 +14,24 @@
   <meta property="og:title" content="KidQuest — Гейміфікований трекер для дітей">
   <meta property="og:description"
     content="Прибирання, уроки та спорт стають цікавими місіями з балами, прокачуванням рівня та цінними нагородами.">
-  <meta property="og:image" content="images/icons/icon-512.png">
+  <meta property="og:image" content="images/icons/icon-512.png?v=3">
 
-  <!-- Підключення PWA Manifest -->
-  <link rel="manifest" href="manifest.json">
+  <!-- Підключення PWA Manifest (з примусовим оновленням кешу ?v=3) -->
+  <link rel="manifest" href="manifest.json?v=3">
 
-  <!-- Налаштування для iOS (iPhone / iPad) -->
+  <!-- Налаштування для iOS (iPhone / iPad) та браузерів -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KidQuest">
-  <link rel="apple-touch-icon" href="/images/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192.png?v=3">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/icons/icon-192.png?v=3">
 
   <!-- Колір шапки браузера на Android -->
   <meta name="theme-color" content="#020617">
 
   <!-- Tailwind CSS & Custom Styles -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 
 <body
@@ -46,7 +47,7 @@
     <!-- ================= БЛОК 1: Шапка ================= -->
     <header class="flex justify-between items-center gap-4 h-14 shrink-0">
       <div class="flex items-center gap-3 group cursor-pointer">
-        <img src="images/icons/icon-192.png" alt="KidQuest Logo"
+        <img src="images/icons/icon-192.png?v=3" alt="KidQuest Logo"
           class="w-12 h-12 sm:w-14 sm:h-14 transform transition-transform group-hover:rotate-12 duration-300 object-contain drop-shadow-md">
         <span class="font-black text-2xl sm:text-3xl tracking-wider text-amber-400">KidQuest</span>
       </div>
@@ -350,7 +351,7 @@
   <!-- Скрипти -->
   <script src="js/locales.js"></script>
   <script src="js/config.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js" defer></script>
 
   <!-- Реєстрація PWA Service Worker -->
   <script>
