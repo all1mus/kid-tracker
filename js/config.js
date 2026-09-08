@@ -1,11 +1,7 @@
-/**
- * KidQuest — Конфігураційні дані (js/config.js)
- */
 window.CONFIG = window.CONFIG || {
   TELEGRAM_BOT_NAME: "KidQuestBot",
   appName: 'KidQuest',
   trialDays: 7,
-  // Ключі i18n для підтримки декількох мов (UA / EN)
   features: [
     {
       icon: '🎯',
@@ -25,5 +21,4 @@ window.CONFIG = window.CONFIG || {
   ]
 };
 
-// Для зворотної сумісності (якщо десь у коді використовується APP_CONFIG)
 window.APP_CONFIG = window.CONFIG;

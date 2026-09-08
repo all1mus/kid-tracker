@@ -67,7 +67,7 @@
 .btn-squircle {
   position: relative;
   padding: 0 1.25rem;
-  border-radius: 1.25rem;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +91,6 @@
   will-change: transform;
 }
 
-/* --- Світловий відблиск при наведенні --- */
 .btn-squircle::before {
   content: '';
   position: absolute;
@@ -114,15 +113,12 @@
   transform: scale(1.18) rotate(-4deg);
 }
 
-/* --- Фізичний відгук при кліку --- */
 .btn-squircle:active {
   transform: scale(0.98) translateZ(0) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* ================= ПООЧЕРЕДНАЯ АНИМАЦИЯ КНОПОК ================= */
-
-/* Telegram импульс (от 0s до 2.5s) */
+/* ================= ПОЧЕРГОВА АНІМАЦІЯ КНОПОК ================= */
 @keyframes pulseTelegram {
   0% {
     transform: scale(1);
@@ -144,7 +140,6 @@
   }
 }
 
-/* Google импульс (от 2.5s до 5.0s) */
 @keyframes pulseGoogle {
 
   0%,
@@ -175,7 +170,6 @@
   animation: pulseGoogle 5s infinite ease-in-out;
 }
 
-/* При наведении мыши останавливаем анимацию */
 .btn-telegram:hover,
 .btn-google:hover {
   animation-play-state: paused;
@@ -193,7 +187,7 @@
   box-shadow: 0 0 25px rgba(66, 133, 244, 0.6);
 }
 
-/* ================= ПЛАВНЕ МОДАЛЬНЕ ВІКНО FAQ ================= */
+/* ================= МОДАЛЬНІ ВІКНА ================= */
 .faq-modal-overlay {
   background: rgba(2, 6, 23, 0.8);
   -webkit-backdrop-filter: blur(8px);
@@ -218,7 +212,7 @@
   transform: scale(1) translateY(0) translateZ(0);
 }
 
-/* ================= АНІМАЦІЯ ПОЯВИ СТОРІНКИ ================= */
+/* ================= АНІМАЦІЯ ПОЯВИ ================= */
 @keyframes fadeUp {
   from {
     opacity: 0;

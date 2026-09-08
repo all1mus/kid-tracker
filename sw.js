@@ -1,76 +1,98 @@
-const CACHE_NAME = 'kidquest-v4'; // Підняли версію
+const CACHE_NAME = 'kidquest-v7';
 
 const ASSETS_TO_CACHE = [
-  'index.html',
-  'manifest.json',
-  'css/style.css',
-  'js/app.js',
-  'js/config.js',
-  'js/locales.js',
-  'images/icons/icon-192.png',
-  'images/icons/icon-512.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './css/style.css',
+  './js/app.js',
+  './js/config.js',
+  './js/locales.js',
+  './images/icons/icon-192.png',
+  './images/icons/icon-512.png'
 ];
 
-// Встановлення та завантаження нових файлів у кеш
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Caching updated app assets');
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
-  self.skipWaiting(); // Відразу активувати новий Service Worker
+  self.skipWaiting();
 });
 
-// Активація та видалення ВСІХ старих кешів (v1, v2, v3)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('[SW] Removing old cache:', key);
             return caches.delete(key);
           }
         })
       );
     })
   );
-  self.clients.claim(); // Взяти під контроль усі відкриті вкладки
+  self.clients.claim();
 });
 
-// Перехоплення запитів: Стратегія "Network First" для HTML та "Stale-While-Revalidate" для ресурсів
 self.addEventListener('fetch', (event) => {
-  // Для HTML файлів / навігації
+  if (event.request.method !== 'GET' || event.request.url.includes('cdn.tailwindcss.com')) {
+    return;
+  }
+
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
         .then((networkResponse) => {
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
           });
+          return networkResponse;
         })
-        .catch(() => caches.match('index.html')) // Якщо немає інтернету — віддаємо index.html
+        .catch(() => caches.match('./index.html'))
     );
     return;
   }
 
-  // Для решти ресурсів (картинки, скрипти, стилі)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request)
-        .then((networkResponse) => {
+      if (cachedResponse) {
+        fetch(event.request).then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse.clone());
+              cache.put(event.request, responseToCache);
             });
           }
-          return networkResponse;
-        })
-        .catch(() => {/* Offline fallback */ });
+        }).catch(() => { });
 
-      return cachedResponse || fetchPromise;
+        return cachedResponse;
+      }
+
+      return fetch(event.request).then((networkResponse) => {
+        if (!networkResponse || networkResponse.status !== 200) {
+          return networkResponse;
+        }
+
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+
+        return networkResponse;
+      });
     })
   );
 });
+
+function clearAppCache() {
+  if (confirm(state.currentLang === 'ua' ? 'Очистити кеш додатка?' : 'Clear app cache?')) {
+    localStorage.clear();
+    sessionStorage.clear();
+    location.reload();
+  }
+}
+
+window.clearAppCache = clearAppCache;
