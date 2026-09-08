@@ -41,8 +41,7 @@
   <div class="ambient-bg"></div>
 
   <!-- ЛЕНДИНГ / ЕКРАН ВХОДУ -->
-  <div id="landingScreen"
-    class="min-h-screen max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col justify-between gap-3 sm:gap-4 animate-fade-up">
+  <div id="landingScreen" class="max-w-4xl mx-auto px-4 sm:px-6 py-6 flex flex-col animate-fade-up">
 
     <!-- ================= БЛОК 1: Шапка ================= -->
     <header class="flex justify-between items-center gap-2 sm:gap-4 h-14 shrink-0">
@@ -117,11 +116,11 @@
       </div>
     </header>
 
-    <!-- ================= БЛОК 2: Головний заголовок + Опис ================= -->
-    <main class="flex flex-col gap-4 sm:gap-6 my-auto">
-      <div class="text-center space-y-2 max-w-3xl mx-auto my-auto">
+    <!-- ================= БЛОК 2: Контент ================= -->
+    <main class="flex flex-col gap-6 pt-10 sm:pt-16 pb-4">
+      <div class="text-center space-y-3 max-w-3xl mx-auto">
         <h1
-          class="text-2xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white flex flex-col justify-center items-center">
+          class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-white flex flex-col justify-center items-center">
           <span data-i18n="heroTitle" class="inline-block">Перетворіть рутину на</span>
           <span data-i18n="heroHighlight"
             class="inline-block text-amber-400 drop-shadow-[0_4px_25px_rgba(251,191,36,0.4)]">
@@ -135,8 +134,8 @@
         </p>
       </div>
 
-      <!-- ================= БЛОК 3: Кнопки авторизації ================= -->
-      <div class="w-full max-w-[280px] mx-auto space-y-2.5 my-1 flex flex-col items-center">
+      <!-- Кнопки авторизації -->
+      <div class="w-full max-w-[280px] mx-auto space-y-3 my-2 flex flex-col items-center">
         <!-- Кнопка Telegram -->
         <button onclick="login('Telegram')"
           class="btn-squircle btn-telegram font-bold text-sm cursor-pointer h-12 w-full flex items-center justify-center shrink-0">
@@ -148,7 +147,7 @@
         </button>
 
         <!-- Роздільник "або" -->
-        <div class="relative flex items-center justify-center py-0.5 w-full">
+        <div class="relative flex items-center justify-center py-1 w-full">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full divider-glow"></div>
           </div>
@@ -175,8 +174,8 @@
         </button>
       </div>
 
-      <!-- ================= БЛОК 4: Бейдж + Соц. доказ + Гарантії ================= -->
-      <div class="w-full max-w-xl mx-auto space-y-2 text-center mt-1">
+      <!-- Бейдж + Соц. доказ + Гарантії (ДОБАВЛЕН ОТСТУП mt-8 sm:mt-10) -->
+      <div class="w-full max-w-xl mx-auto space-y-3 text-center mt-8 sm:mt-10">
         <div class="flex justify-center">
           <div
             class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-xs sm:text-sm font-black text-sky-300">
@@ -189,7 +188,7 @@
           🔥 Понад 1,200+ родин вже створюють корисні звички
         </p>
 
-        <div class="divider-card my-1"></div>
+        <div class="divider-card my-2"></div>
 
         <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-bold text-slate-300">
           <span data-i18n="guaranteeSpam">🔒 Без спаму</span>
@@ -200,8 +199,8 @@
         </div>
       </div>
 
-      <!-- ================= БЛОК 5: Картки ================= -->
-      <div class="flex flex-col gap-4 sm:gap-6 mt-1">
+      <!-- Картки -->
+      <div class="flex flex-col gap-6 mt-4">
         <div class="divider-glow"></div>
 
         <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -228,7 +227,7 @@
           </div>
         </section>
 
-        <footer class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="glass-panel p-5 rounded-3xl space-y-1.5 text-left">
             <div class="text-2xl mb-1">🎯</div>
             <div data-i18n="card1Title" class="font-black text-sm sm:text-base text-sky-300">1. Ставте мету</div>
@@ -249,35 +248,32 @@
             <div data-i18n="card3Desc" class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">Дитина
               отримує бали та бачить свій розвиток.</div>
           </div>
-        </footer>
+        </section>
 
         <div class="divider-glow"></div>
       </div>
     </main>
 
-    <!-- ================= БЛОК 6: PWA та Нижній FAQ ================= -->
-    <footer class="flex flex-col items-center justify-center gap-2.5 my-2 shrink-0">
-
-      <!-- Компактний блок кнопки PWA -->
+    <!-- ================= БЛОК 3: PWA та Нижній FAQ ================= -->
+    <footer class="flex flex-col items-center justify-center gap-3 mt-6 sm:mt-8 pb-4 shrink-0">
       <div id="pwa-install-container" class="text-center animate-fade-up">
         <button onclick="installPwa()"
           class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/90 text-sky-300 font-bold text-xs border border-sky-500/30 shadow-[0_2px_12px_rgba(56,189,248,0.1)] hover:border-sky-400/60 hover:bg-slate-800/90 active:scale-95 transition-all duration-200 cursor-pointer backdrop-blur-md">
           <span class="text-sm transform group-hover:scale-110 transition-transform duration-200">📱</span>
-          <span class="tracking-wide">Додати KidQuest на головний екран</span>
-          <span class="text-[10px] opacity-60 font-normal">| 1-клік</span>
+          <span data-i18n="pwaInstallBtn" class="tracking-wide">Додати KidQuest на головний екран</span>
+          <span class="text-[10px] opacity-60 font-normal">| <span data-i18n="pwaInstallBadge">1-клік</span></span>
         </button>
-        <p class="mt-1 text-[10px] text-slate-400 font-medium">
+        <p data-i18n="pwaInstallDesc" class="mt-1 text-[10px] text-slate-400 font-medium">
           📱 Працює як додаток: додайте на екран смартфона в меню браузера
         </p>
       </div>
 
-      <!-- Кнопка відкриття FAQ -->
       <button onclick="openFaqModal()" data-i18n="faqBtn"
         class="text-xs sm:text-sm font-bold text-slate-300 hover:text-amber-400 underline decoration-slate-600 underline-offset-4 transition-colors cursor-pointer">
         💬 Часті запитання (FAQ)
       </button>
-
     </footer>
+
   </div>
 
   <!-- МОДАЛЬНЕ ВІКНО FAQ -->
@@ -287,7 +283,6 @@
     <div
       class="faq-modal-content glass-panel border border-slate-700 w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative text-left space-y-5 shadow-2xl max-h-[85vh] flex flex-col">
 
-      <!-- Заголовок + Кнопка закриття -->
       <div class="flex items-center justify-between gap-2 shrink-0">
         <h3 id="faqTitle" data-i18n="faqTitle" class="text-xl sm:text-2xl font-black text-sky-400">💬 Часті запитання
         </h3>
@@ -295,7 +290,6 @@
           class="text-slate-400 hover:text-white font-bold text-2xl cursor-pointer transition-transform hover:scale-110">✕</button>
       </div>
 
-      <!-- Скроліруємий контент -->
       <div class="space-y-4 overflow-y-auto pr-1 custom-scrollbar">
         <div class="bg-slate-900/90 p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-1.5">
           <div data-i18n="faqQ1" class="text-sm sm:text-base font-bold text-amber-300">1. З якого віку підходить
@@ -354,7 +348,6 @@
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 
-  <!-- Реєстрація Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
