@@ -51,7 +51,8 @@ window.locales = {
     childModalDesc: "Введи 6-значний код, який тобі показав тато або мама в своєму додатку:",
     childModalBtn: "Увійти в квести",
     cancel: "Скасувати",
-    codePrompt: "Будь ласка, введіть 6-значний код"
+    codePrompt: "Будь ласка, введіть 6-значний код",
+    placeholderCode: "000000"
   },
   en: {
     metaTitle: "KidQuest — Gamified Tracker for Kids",
@@ -84,6 +85,7 @@ window.locales = {
     card1Desc: "A gift or trip the child strives for.",
     card2Title: "2. Assign missions",
     card2Desc: "Simple daily tasks without lengthy arguments.",
+    cardCard3Title: "3. Celebrate success",
     card3Title: "3. Celebrate success",
     card3Desc: "The child earns points and sees their growth.",
     footerText: "© KidQuest. All rights reserved.",
@@ -105,6 +107,7 @@ window.locales = {
     childModalDesc: "Enter the 6-digit code shown by your parent in their app:",
     childModalBtn: "Enter Quests",
     cancel: "Cancel",
-    codePrompt: "Please enter a 6-digit code"
+    codePrompt: "Please enter a 6-digit code",
+    placeholderCode: "000000"
   }
 };

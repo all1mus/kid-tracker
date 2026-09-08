@@ -42,6 +42,7 @@ function setLanguage(lang) {
     document.title = locales[lang].metaTitle;
   }
 
+  // Оновлення всіх елементів з атрибутом data-i18n
   document.querySelectorAll('[data-i18n]').forEach(element => {
     const key = element.getAttribute('data-i18n');
     if (locales[lang] && locales[lang][key]) {
@@ -49,6 +50,13 @@ function setLanguage(lang) {
     }
   });
 
+  // Оновлення placeholder для інпутів (наприклад, введення коду)
+  const childInput = document.getElementById('childCodeInput');
+  if (childInput && locales[lang].placeholderCode) {
+    childInput.placeholder = locales[lang].placeholderCode;
+  }
+
+  // Стилізація активної кнопки мови
   const btnUa = document.getElementById('lang-ua');
   const btnEn = document.getElementById('lang-en');
 
@@ -216,16 +224,33 @@ function logout() {
   }, 100);
 }
 
-function clearAppCache() {
+async function clearAppCache() {
   const confirmMsg = state.currentLang === 'ua'
-    ? 'Очистити кеш та дані додатка?'
-    : 'Clear app cache and data?';
+    ? 'Очистити кеш та оновити додаток?'
+    : 'Clear cache and update app?';
 
-  if (confirm(confirmMsg)) {
-    localStorage.clear();
-    sessionStorage.clear();
-    location.reload();
+  if (!confirm(confirmMsg)) return;
+
+  // 1. Очищаємо LocalStorage та SessionStorage
+  localStorage.clear();
+  sessionStorage.clear();
+
+  // 2. Видаляємо всі кеші Service Worker (Caches API)
+  if ('caches' in window) {
+    const keys = await caches.keys();
+    await Promise.all(keys.map(key => caches.delete(key)));
   }
+
+  // 3. Відключаємо (Unregister) всі діючі Service Workers
+  if ('serviceWorker' in navigator) {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    for (let registration of registrations) {
+      await registration.unregister();
+    }
+  }
+
+  // 4. Перезавантажуємо сторінку
+  window.location.reload(true);
 }
 
 window.setLanguage = setLanguage;

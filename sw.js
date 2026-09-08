@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kidquest-v7';
+const CACHE_NAME = 'kidquest-v8';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -86,13 +86,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-
-function clearAppCache() {
-  if (confirm(state.currentLang === 'ua' ? 'Очистити кеш додатка?' : 'Clear app cache?')) {
-    localStorage.clear();
-    sessionStorage.clear();
-    location.reload();
-  }
-}
-
-window.clearAppCache = clearAppCache;
